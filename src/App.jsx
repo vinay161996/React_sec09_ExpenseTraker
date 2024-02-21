@@ -6,6 +6,7 @@ import Login from "./pages/auth/Login";
 import RootLayout from "./pages/RootLayout";
 import SignUp from "./pages/auth/SignUp";
 import AuthRootLayout from "./pages/AuthRootLayout";
+import ContactDetail from "./pages/ContactDetail";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/contactDetail",
+        element: <ContactDetail />,
       },
     ],
   },
