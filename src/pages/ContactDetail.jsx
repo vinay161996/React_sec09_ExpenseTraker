@@ -5,10 +5,12 @@ import useFetch from "../hooks/useFetch";
 import { useContext, useEffect } from "react";
 import AuthContext from "../store/authContext/AuthContext";
 import Loader from "../ui/loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 const ContactDetail = () => {
   const { isLoading, sendingReq } = useFetch();
-  const { token } = useContext(AuthContext);
+  const { token, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     resetField,
@@ -53,6 +55,11 @@ const ContactDetail = () => {
     console.log("inemailverification", receiveData);
   };
 
+  const userLogout = () => {
+    logout();
+    navigate("/auth/login");
+  };
+
   useEffect(() => {
     const gettingProfile = async () => {
       const reqConfig = {
@@ -84,15 +91,20 @@ const ContactDetail = () => {
       {isLoading && <Loader />}
       <Container className="vh-100 vw-100">
         <Row className="fst-italic border-bottom py-3 align-content-center">
-          <Col className=" fs-4 col-12 col-md-8 d-flex  align-items-center ">
+          <Col className=" fs-4 col-12 col-md-7 d-flex  align-items-center ">
             Winners never quit,Quitters never win.
           </Col>
           <Col
-            className=" p-1 text-center  col-7 col-md-4 rounded "
+            className=" p-1 text-center  col-7 col-md-3 rounded "
             style={{ backgroundColor: "#dabdc2" }}
           >
-            your profile is 64% complete.A complete profile has higher chances
-            of landing a job.
+            <span>
+              your profile is 64% complete.A complete profile has higher chances
+              of landing a job.
+            </span>
+          </Col>
+          <Col className="col-5 col-md-2 d-flex justify-content-end align-items-center">
+            <Button onClick={userLogout}>Logout</Button>
           </Col>
         </Row>
 

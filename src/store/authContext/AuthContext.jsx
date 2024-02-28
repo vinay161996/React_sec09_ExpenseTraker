@@ -31,12 +31,19 @@ export const AuthContextProvider = ({ children }) => {
     setUserIdToken(idToken);
   };
 
+  const logoutHandler = () => {
+    setUserEmail("");
+    setUserIdToken("");
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
+  };
+
   const authCtx = {
     email: userEmail,
     token: userIdToken,
     isLoggedIn,
     login: loginHandler,
-    logout: () => {},
+    logout: logoutHandler,
   };
 
   useEffect(() => {
