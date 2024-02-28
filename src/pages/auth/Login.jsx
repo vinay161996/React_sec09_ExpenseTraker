@@ -41,7 +41,6 @@ const Login = () => {
       const [receiveData] = await sendingReq([reqConfig]);
       if (receiveData.error) throw new Error(receiveData.error.message);
       login(receiveData);
-      navigate("/");
     } catch (err) {
       alert(err.message);
     }

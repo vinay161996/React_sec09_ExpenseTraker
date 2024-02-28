@@ -2,19 +2,17 @@ import { Container, Col, Row, Button } from "react-bootstrap";
 import Input from "../ui/Input";
 import { useForm } from "react-hook-form";
 import useFetch from "../hooks/useFetch";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../store/authContext/AuthContext";
 import Loader from "../ui/loader/Loader";
 
 const ContactDetail = () => {
-  const { isLoading, sendingReq } = useFetch(
-    "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc"
-  );
+  const { isLoading, sendingReq } = useFetch();
   const { token } = useContext(AuthContext);
   const {
     register,
+    resetField,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 
@@ -22,7 +20,8 @@ const ContactDetail = () => {
     try {
       const { fullName, profilePhoto } = data;
       const reqConfig = {
-        endPoint: "",
+        endPoint:
+          "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
         method: "POST",
         body: {
           idToken: token,
@@ -34,13 +33,51 @@ const ContactDetail = () => {
           "Content-Type": "application/json",
         },
       };
-      const [receiveData] = await sendingReq([reqConfig]);
-
-      reset();
+      await sendingReq([reqConfig]);
     } catch (err) {
       alert("Failed to update");
     }
   };
+
+  const verifyEmail = async () => {
+    const reqConfig = {
+      endPoint:
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
+      method: "POST",
+      body: {
+        requestType: "VERIFY_EMAIL",
+        idToken: token,
+      },
+    };
+    const [receiveData] = await sendingReq([reqConfig]);
+    console.log("inemailverification", receiveData);
+  };
+
+  useEffect(() => {
+    const gettingProfile = async () => {
+      const reqConfig = {
+        endPoint:
+          "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
+        method: "POST",
+        body: {
+          idToken: token,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const [receiveData] = await sendingReq([reqConfig]);
+      if (receiveData.errors) return;
+      if (receiveData?.users?.length) {
+        console.log(receiveData.users[0]);
+        const { displayName, photoUrl } = receiveData.users[0];
+        resetField("fullName", { defaultValue: displayName });
+        resetField("profilePhoto", { defaultValue: photoUrl });
+      }
+    };
+    gettingProfile();
+    console.log("useeffetc runnig");
+  }, [sendingReq, resetField, token]);
 
   return (
     <>
@@ -91,6 +128,10 @@ const ContactDetail = () => {
             />
             <Button className="mt-3" type="submit" variant="outline-secondary">
               Update
+            </Button>
+
+            <Button onClick={verifyEmail} className="mx-3 mt-3">
+              Verify email
             </Button>
           </form>
         </Row>

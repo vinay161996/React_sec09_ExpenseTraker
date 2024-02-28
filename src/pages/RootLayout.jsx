@@ -6,7 +6,6 @@ const RootLayout = () => {
   const { isLoggedIn } = useContext(AuthContext);
   return (
     <>
-      {console.log(isLoggedIn)}
       {isLoggedIn && <Outlet />}
       {!isLoggedIn && <Navigate to="/auth" />}
     </>

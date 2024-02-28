@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const baseUrl = "";
 
-let updatedBaseUrl = baseUrl;
 const useFetch = (updatedUrl = "") => {
   const [isLoading, setIsloading] = useState(false);
 
+  let updatedBaseUrl = baseUrl;
   updatedBaseUrl = updatedUrl ? updatedUrl : updatedBaseUrl;
 
-  const sendingReq = async (reqConfigs) => {
+  const sendingReq = useCallback(async (reqConfigs) => {
     setIsloading(true);
     try {
       const promises = reqConfigs.map((reqConfig) => {
@@ -29,7 +29,7 @@ const useFetch = (updatedUrl = "") => {
     } finally {
       setIsloading(false);
     }
-  };
+  }, []);
 
   return {
     isLoading,

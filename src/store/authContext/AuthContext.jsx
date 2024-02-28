@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const AuthContext = createContext({
   token: "",
@@ -38,6 +38,16 @@ export const AuthContextProvider = ({ children }) => {
     login: loginHandler,
     logout: () => {},
   };
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const email = JSON.parse(localStorage.getItem("email"));
+    if (token && email) {
+      setUserEmail(email);
+      setUserIdToken(token);
+    }
+  }, []);
+
   return (
     <AuthContext.Provider value={authCtx}>{children}</AuthContext.Provider>
   );
