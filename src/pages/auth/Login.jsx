@@ -7,40 +7,68 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useFetch from "../../hooks/useFetch";
 import Loader from "../../ui/loader/Loader";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../store/authContext/AuthContext";
 
 const Login = () => {
+  const [isForgetPassword, setIsForgetPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  const { isLoading, sendingReq } = useFetch(
-    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc"
-  );
+  const { isLoading, sendingReq } = useFetch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const userLogin = async (data) => {
+    const { email, password } = data;
+    const reqConfig = {
+      endPoint:
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
+      method: "POST",
+      body: {
+        email,
+        password,
+        returnSecureToken: true,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const [receiveData] = await sendingReq([reqConfig]);
+    if (receiveData.error) throw new Error(receiveData.error.message);
+    login(receiveData);
+  };
+
+  const forgetPasswordHandler = async (data) => {
     try {
-      const { email, password } = data;
+      const { email } = data;
       const reqConfig = {
-        endPoint: "",
+        endPoint:
+          "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
         method: "POST",
         body: {
+          requestType: "PASSWORD_RESET",
           email,
-          password,
-          returnSecureToken: true,
         },
         headers: {
           "Content-Type": "application/json",
         },
       };
 
-      const [receiveData] = await sendingReq([reqConfig]);
-      if (receiveData.error) throw new Error(receiveData.error.message);
-      login(receiveData);
+      await sendingReq([reqConfig]);
+      alert("check your email to reset password");
+    } catch (err) {
+      throw new Error("Failed to reset password");
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      if (!isForgetPassword) await userLogin(data);
+      else await forgetPasswordHandler(data);
     } catch (err) {
       alert(err.message);
     }
@@ -66,29 +94,46 @@ const Login = () => {
                 },
               })}
             />
-            <Input
-              error={errors?.password?.message}
-              type="password"
-              label="Password"
-              id="password"
-              {...register("password", {
-                required: "Required*",
-                minLength: {
-                  value: 8,
-                  message: "Should be minimun of 8 characters",
-                },
-              })}
-            />
 
-            <Button
-              type="submit"
-              className="w-100 mt-4 py-2 text-white border-0 rounded-pill "
-            >
-              Login
-            </Button>
-            <Col className=" mt-2 d-flex align-items-center justify-content-center">
-              <Button variant="link">Forget password</Button>
-            </Col>
+            {!isForgetPassword && (
+              <>
+                <Input
+                  error={errors?.password?.message}
+                  type="password"
+                  label="Password"
+                  id="password"
+                  {...register("password", {
+                    required: "Required*",
+                    minLength: {
+                      value: 8,
+                      message: "Should be minimun of 8 characters",
+                    },
+                  })}
+                />
+                <Button
+                  type="submit"
+                  className="w-100 mt-4 py-2 text-white border-0 rounded-pill "
+                >
+                  Login
+                </Button>
+                <Col className=" mt-2 d-flex align-items-center justify-content-center">
+                  <Button
+                    onClick={() => setIsForgetPassword((prev) => !prev)}
+                    variant="link"
+                  >
+                    Forget password
+                  </Button>
+                </Col>
+              </>
+            )}
+            {isForgetPassword && (
+              <Button
+                type="submit"
+                className="w-100 mt-4 py-2 text-white border-0 rounded-pill "
+              >
+                Reset Password
+              </Button>
+            )}
           </form>
         </Row>
         <Row className="my-4">
