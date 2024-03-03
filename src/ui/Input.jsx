@@ -5,7 +5,7 @@ const Input = forwardRef(function Input({ id, error, label, ...props }, ref) {
   return (
     <>
       <div className={classes.inputContainer}>
-        <div className=" position-relative">
+        <div className="position-relative">
           <input
             ref={ref}
             placeholder=" "

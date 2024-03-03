@@ -1,12 +1,12 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import { AuthContextProvider } from "./store/authContext/AuthContext";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import RootLayout from "./pages/RootLayout";
 import SignUp from "./pages/auth/SignUp";
 import AuthRootLayout from "./pages/AuthRootLayout";
 import ContactDetail from "./pages/ContactDetail";
+import ContextProviders from "./store/ContextProviders";
 
 const router = createBrowserRouter([
   {
@@ -41,9 +41,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AuthContextProvider>
+    <ContextProviders>
       <RouterProvider router={router} />
-    </AuthContextProvider>
+    </ContextProviders>
   );
 }
 

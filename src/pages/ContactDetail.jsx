@@ -42,17 +42,22 @@ const ContactDetail = () => {
   };
 
   const verifyEmail = async () => {
-    const reqConfig = {
-      endPoint:
-        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
-      method: "POST",
-      body: {
-        requestType: "VERIFY_EMAIL",
-        idToken: token,
-      },
-    };
-    const [receiveData] = await sendingReq([reqConfig]);
-    console.log("inemailverification", receiveData);
+    try {
+      const reqConfig = {
+        endPoint:
+          "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc",
+        method: "POST",
+        body: {
+          requestType: "VERIFY_EMAIL",
+          idToken: token,
+        },
+      };
+      const [receiveData] = await sendingReq([reqConfig]);
+      if (receiveData.error) throw new Error("Email verification failed");
+      alert("Check your email to verify");
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const userLogout = () => {
@@ -76,7 +81,6 @@ const ContactDetail = () => {
       const [receiveData] = await sendingReq([reqConfig]);
       if (receiveData.errors) return;
       if (receiveData?.users?.length) {
-        console.log(receiveData.users[0]);
         const { displayName, photoUrl } = receiveData.users[0];
         resetField("fullName", { defaultValue: displayName });
         resetField("profilePhoto", { defaultValue: photoUrl });
