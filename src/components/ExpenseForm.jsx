@@ -6,19 +6,27 @@ import { useContext } from "react";
 import ExpenseContext from "../store/expenseContext/ExpenseContext";
 
 const ExpenseForm = () => {
-  const { addExpense } = useContext(ExpenseContext);
+  const { addExpense, updatingExpense } = useContext(ExpenseContext);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      amount: updatingExpense.amount ? updatingExpense.amount : "",
+      description: updatingExpense.description
+        ? updatingExpense.description
+        : "",
+      category: updatingExpense.category ? updatingExpense.category : "",
+    },
+  });
 
   const onSubmit = (data) => {
     addExpense({ ...data });
     reset();
   };
-
+  console.log("forming");
   return (
     <>
       <Row style={{ maxWidth: "600px" }}>

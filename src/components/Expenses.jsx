@@ -3,7 +3,13 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import ExpenseContext from "../store/expenseContext/ExpenseContext";
 
 const Expenses = () => {
-  const { expense } = useContext(ExpenseContext);
+  const { expense, removeExpense, toEditExpense } = useContext(ExpenseContext);
+  const deleteExpense = (data) => {
+    removeExpense(data);
+  };
+  const editExpense = (data) => {
+    toEditExpense(data);
+  };
   return (
     <>
       {!!expense.length && (
@@ -20,8 +26,10 @@ const Expenses = () => {
               <Col>{item.category}</Col>
               <Col>${item.amount}</Col>
               <Col>
-                <Button className="mx-1">Edit</Button>
-                <Button>Delete</Button>
+                <Button onClick={() => editExpense(item)} className="mx-1">
+                  Edit
+                </Button>
+                <Button onClick={() => deleteExpense(item)}>Delete</Button>
               </Col>
             </Row>
           ))}
