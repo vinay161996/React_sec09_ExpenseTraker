@@ -1,7 +1,0 @@
-POST https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA706bZGi69b2jKn0VDqQzCqahVxVnQdjc
-
-{
-    "displayName":"vinay",
-    "photoUrl":"https://www.gggege.com",
-    "idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6ImFlYzU4NjcwNGNhOTZiZDcwMzZiMmYwZDI4MGY5NDlmM2E5NzZkMzgiLCJ0eXAiOiJKV1QifQ"
-}

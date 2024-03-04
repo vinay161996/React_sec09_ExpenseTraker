@@ -7,31 +7,33 @@ import ExpenseContext from "../store/expenseContext/ExpenseContext";
 
 const ExpenseForm = () => {
   const { addExpense, updatingExpense } = useContext(ExpenseContext);
+
+  console.log("updatingexpen", updatingExpense);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      amount: updatingExpense.amount ? updatingExpense.amount : "",
-      description: updatingExpense.description
-        ? updatingExpense.description
-        : "",
-      category: updatingExpense.category ? updatingExpense.category : "",
-    },
-  });
+  } = useForm();
 
   const onSubmit = (data) => {
     addExpense({ ...data });
     reset();
   };
-  console.log("forming");
+
   return (
     <>
       <Row style={{ maxWidth: "600px" }}>
+        {/* <Input
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          label="Price"
+          type="number"
+          id="price"
+        /> */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
+            data={updatingExpense}
             error={errors?.amount?.message}
             label="Amount"
             id="amount"
