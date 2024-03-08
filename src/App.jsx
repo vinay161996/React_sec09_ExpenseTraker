@@ -46,8 +46,8 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const email = localStorage.getItem("email");
-    const token = localStorage.getItem("email");
-    if (!!email && !!token) {
+    const token = localStorage.getItem("token");
+    if (email && token) {
       dispatch(authActions.login({ email, token }));
     }
   }, []);
