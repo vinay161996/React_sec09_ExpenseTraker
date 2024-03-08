@@ -7,14 +7,16 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useFetch from "../../hooks/useFetch";
 import Loader from "../../ui/loader/Loader";
-import { useContext, useState } from "react";
-import AuthContext from "../../store/authContext/AuthContext";
+import { useState } from "react";
+import emailChanger from "../../features/emailChanger";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authSlice/authSlice";
 
 const Login = () => {
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
   const { isLoading, sendingReq } = useFetch();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -39,7 +41,12 @@ const Login = () => {
 
     const [receiveData] = await sendingReq([reqConfig]);
     if (receiveData.error) throw new Error(receiveData.error.message);
-    login(receiveData);
+    const { idToken } = receiveData;
+    const updatedEmail = emailChanger(email);
+    console.log(updatedEmail);
+    localStorage.setItem("email", updatedEmail);
+    localStorage.setItem("token", idToken);
+    dispatch(authActions.login({ email: updatedEmail, token: idToken }));
   };
 
   const forgetPasswordHandler = async (data) => {

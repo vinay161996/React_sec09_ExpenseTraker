@@ -1,15 +1,11 @@
-import { useContext, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import AuthContext from "../store/authContext/AuthContext";
+import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AuthRootLayout = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  useEffect(() => {
-    if (isLoggedIn) navigate("/");
-  }, [isLoggedIn, navigate]);
-  return <>{!isLoggedIn && <Outlet />}</>;
+  console.log("inrootlayout", isLoggedIn);
+  return <>{isLoggedIn ? <Navigate to="/" /> : <Outlet />}</>;
 };
 
 export default AuthRootLayout;

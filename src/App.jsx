@@ -7,6 +7,9 @@ import SignUp from "./pages/auth/SignUp";
 import AuthRootLayout from "./pages/AuthRootLayout";
 import ContactDetail from "./pages/ContactDetail";
 import ContextProviders from "./store/ContextProviders";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { authActions } from "./store/authSlice/authSlice";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +43,15 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    const token = localStorage.getItem("email");
+    if (!!email && !!token) {
+      dispatch(authActions.login({ email, token }));
+    }
+  }, []);
+  console.log("inapp");
   return (
     <ContextProviders>
       <RouterProvider router={router} />

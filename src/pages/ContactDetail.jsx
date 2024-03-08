@@ -2,15 +2,17 @@ import { Container, Col, Row, Button } from "react-bootstrap";
 import Input from "../ui/Input";
 import { useForm } from "react-hook-form";
 import useFetch from "../hooks/useFetch";
-import { useContext, useEffect } from "react";
-import AuthContext from "../store/authContext/AuthContext";
+import { useEffect } from "react";
 import Loader from "../ui/loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store/authSlice/authSlice";
 
 const ContactDetail = () => {
   const { isLoading, sendingReq } = useFetch();
-  const { token, logout } = useContext(AuthContext);
+  const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     resetField,
@@ -61,8 +63,11 @@ const ContactDetail = () => {
   };
 
   const userLogout = () => {
-    logout();
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
+    console.log("navigating");
     navigate("/auth/login");
+    dispatch(authActions.logout());
   };
 
   useEffect(() => {
@@ -87,8 +92,7 @@ const ContactDetail = () => {
       }
     };
     gettingProfile();
-    console.log("useeffetc runnig");
-  }, [sendingReq, resetField, token]);
+  }, []);
 
   return (
     <>

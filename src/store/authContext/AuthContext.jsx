@@ -17,6 +17,8 @@ const emailChanger = (str) => {
   return updatedStr;
 };
 
+let refreshFlag = true;
+
 export const AuthContextProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState("");
   const [userIdToken, setUserIdToken] = useState("");
@@ -46,6 +48,18 @@ export const AuthContextProvider = ({ children }) => {
     logout: logoutHandler,
   };
 
+  // if (refreshFlag) {
+  //   setTimeout(() => {
+  //   const token = JSON.parse(localStorage.getItem("token"));
+  //   const email = JSON.parse(localStorage.getItem("email"));
+  //   console.log("refresh", !!(token && email));
+  //   if (token && email) {
+  //     setUserEmail(email);
+  //     setUserIdToken(token);
+  //   }
+  //   refreshFlag = false;
+  //   }, 6000);
+  // }
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"));
     const email = JSON.parse(localStorage.getItem("email"));
@@ -54,7 +68,7 @@ export const AuthContextProvider = ({ children }) => {
       setUserIdToken(token);
     }
   }, []);
-
+  console.log("Inauthco");
   return (
     <AuthContext.Provider value={authCtx}>{children}</AuthContext.Provider>
   );

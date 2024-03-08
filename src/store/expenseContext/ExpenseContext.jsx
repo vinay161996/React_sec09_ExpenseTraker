@@ -48,6 +48,7 @@ export const ExpenseContextProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
       };
+
       await sendingReq([reqConfig]);
 
       setExpense((prev) => {
@@ -96,7 +97,7 @@ export const ExpenseContextProvider = ({ children }) => {
     } catch (err) {
       alert("Failed to fetch");
     }
-  }, [sendingReq]);
+  }, []);
 
   const expenseCtx = {
     expense,
