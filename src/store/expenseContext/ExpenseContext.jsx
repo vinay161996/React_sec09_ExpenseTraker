@@ -14,7 +14,11 @@ export const ExpenseContextProvider = ({ children }) => {
   const [expense, setExpense] = useState([]);
   const [updatingExpense, setUpdatingExpense] = useState({});
   const { isLoading, sendingReq } = useFetch();
-
+  const [formData, setFormData] = useState({
+    amount: "",
+    description: "",
+    category: "",
+  });
   const handleAddExpenses = async (data) => {
     try {
       const { amount, description, category } = data;
@@ -104,6 +108,8 @@ export const ExpenseContextProvider = ({ children }) => {
     addExpense: handleAddExpenses,
     removeExpense: handleRemoveExpenses,
     toEditExpense: handleToEditExpense,
+    formData,
+    setFormData,
   };
   return (
     <ExpenseContext.Provider value={expenseCtx}>

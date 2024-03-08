@@ -6,7 +6,7 @@ import { useContext } from "react";
 import ExpenseContext from "../store/expenseContext/ExpenseContext";
 
 const ExpenseForm = () => {
-  const { addExpense, updatingExpense } = useContext(ExpenseContext);
+  const { addExpense, updatingExpense, formData } = useContext(ExpenseContext);
 
   console.log("updatingexpen", updatingExpense);
   const {
