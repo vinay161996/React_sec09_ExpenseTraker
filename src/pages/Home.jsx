@@ -2,10 +2,16 @@ import { Col, Container, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import Expenses from "../components/Expenses";
+import { useSelector } from "react-redux";
+import Loader from "../ui/loader/Loader";
 
 const Home = () => {
+  const isLoading = useSelector((store) => store.expenses.isLoading);
+  const error = useSelector((store) => store.expenses.error);
   return (
     <>
+      {isLoading && !error && <Loader />}
+      {!!error && alert(error)}
       <Container className="p-3 fst-italic vh-100 vw-100">
         <Row className="border-bottom py-3">
           <Col className="col-12 col-md-8 fs-4 d-flex align-items-center">

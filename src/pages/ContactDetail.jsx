@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import Loader from "../ui/loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store/authSlice/authSlice";
+import { authActions } from "../store/reducers/authSlice";
 
 const ContactDetail = () => {
   const { isLoading, sendingReq } = useFetch();
@@ -63,11 +63,8 @@ const ContactDetail = () => {
   };
 
   const userLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("token");
-    console.log("navigating");
-    navigate("/auth/login");
     dispatch(authActions.logout());
+    navigate("/auth/login");
   };
 
   useEffect(() => {

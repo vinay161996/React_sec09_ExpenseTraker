@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import AuthContext from "../store/authContext/AuthContext";
+import { useSelector } from "react-redux";
 
 const RootLayout = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
     <>
       {isLoggedIn && <Outlet />}

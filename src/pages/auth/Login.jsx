@@ -10,7 +10,7 @@ import Loader from "../../ui/loader/Loader";
 import { useState } from "react";
 import emailChanger from "../../features/emailChanger";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../store/authSlice/authSlice";
+import { authActions } from "../../store/reducers/authSlice";
 
 const Login = () => {
   const [isForgetPassword, setIsForgetPassword] = useState(false);
@@ -43,9 +43,6 @@ const Login = () => {
     if (receiveData.error) throw new Error(receiveData.error.message);
     const { idToken } = receiveData;
     const updatedEmail = emailChanger(email);
-    console.log(updatedEmail);
-    localStorage.setItem("email", updatedEmail);
-    localStorage.setItem("token", idToken);
     dispatch(authActions.login({ email: updatedEmail, token: idToken }));
   };
 

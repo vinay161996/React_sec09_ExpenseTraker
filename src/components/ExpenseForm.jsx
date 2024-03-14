@@ -2,35 +2,38 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Input from "../ui/Input";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
-import ExpenseContext from "../store/expenseContext/ExpenseContext";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addExpense } from "../store/actions/expense";
 
 const ExpenseForm = () => {
-  const { addExpense, updatingExpense } = useContext(ExpenseContext);
+  const updatingExpense = useSelector(
+    (state) => state.expenses.updatingExpense
+  );
+  const dispatch = useDispatch();
 
-  console.log("updatingexpen", updatingExpense);
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    addExpense({ ...data });
+    dispatch(addExpense({ ...data }));
     reset();
   };
+
+  useEffect(() => {
+    setValue("amount", updatingExpense.amount);
+    setValue("description", updatingExpense.description);
+    setValue("category", updatingExpense.category);
+  }, [setValue, updatingExpense]);
 
   return (
     <>
       <Row style={{ maxWidth: "600px" }}>
-        {/* <Input
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          label="Price"
-          type="number"
-          id="price"
-        /> */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             data={updatingExpense}
