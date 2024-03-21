@@ -9,6 +9,8 @@ const Expenses = () => {
   const expenses = useSelector((state) => state.expenses.expenses);
   const dispatch = useDispatch();
 
+  const totalAmount = expenses.reduce((curr, item) => curr + +item.amount, 0);
+
   const deleteExpense = (data) => {
     dispatch(removeExpense(data.id));
   };
@@ -31,6 +33,12 @@ const Expenses = () => {
           className="p-4 bg-success-subtle rounded"
           style={{ maxWidth: "900px", margin: "0px auto 0px" }}
         >
+          <Row className="py-3 fw-bold fst-italic align-items-center border-bottom border-dark">
+            <Col>Description</Col>
+            <Col>Category</Col>
+            <Col>Amount</Col>
+            <Col>Actions</Col>
+          </Row>
           {expenses.map((item) => (
             <Row
               key={item.id}
@@ -47,6 +55,11 @@ const Expenses = () => {
               </Col>
             </Row>
           ))}
+          <Row className="mt-3">
+            <Col className="col fst-italic fw-bold">
+              Total amount: ${totalAmount}
+            </Col>
+          </Row>
         </Container>
       )}
     </>

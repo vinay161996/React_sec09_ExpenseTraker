@@ -1,18 +1,16 @@
 import { Container, Col, Row, Button } from "react-bootstrap";
-import Input from "../ui/Input";
+import Input from "../../ui/Input";
 import { useForm } from "react-hook-form";
-import useFetch from "../hooks/useFetch";
+import useFetch from "../../hooks/useFetch";
 import { useEffect } from "react";
-import Loader from "../ui/loader/Loader";
+import Loader from "../../ui/loader/Loader";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store/reducers/authSlice";
+import { useSelector } from "react-redux";
 
 const ContactDetail = () => {
   const { isLoading, sendingReq } = useFetch();
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const {
     register,
     resetField,
@@ -62,9 +60,8 @@ const ContactDetail = () => {
     }
   };
 
-  const userLogout = () => {
-    dispatch(authActions.logout());
-    navigate("/auth/login");
+  const handleBackToHome = () => {
+    navigate("/");
   };
 
   useEffect(() => {
@@ -89,7 +86,7 @@ const ContactDetail = () => {
       }
     };
     gettingProfile();
-  }, []);
+  }, [resetField, sendingReq, token]);
 
   return (
     <>
@@ -99,18 +96,6 @@ const ContactDetail = () => {
           <Col className=" fs-4 col-12 col-md-7 d-flex  align-items-center ">
             Winners never quit,Quitters never win.
           </Col>
-          <Col
-            className=" p-1 text-center  col-7 col-md-3 rounded "
-            style={{ backgroundColor: "#dabdc2" }}
-          >
-            <span>
-              your profile is 64% complete.A complete profile has higher chances
-              of landing a job.
-            </span>
-          </Col>
-          <Col className="col-5 col-md-2 d-flex justify-content-end align-items-center">
-            <Button onClick={userLogout}>Logout</Button>
-          </Col>
         </Row>
 
         <Row
@@ -119,7 +104,9 @@ const ContactDetail = () => {
         >
           <Col className="fs-5 ">Contact detail</Col>
           <Col className=" d-flex justify-content-end">
-            <Button variant="outline-danger">cancel</Button>
+            <Button onClick={handleBackToHome} variant="outline-secondary">
+              Back to home
+            </Button>
           </Col>
         </Row>
 

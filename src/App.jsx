@@ -1,11 +1,12 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
+import Expense from "./pages/expense/Expense";
 import Login from "./pages/auth/Login";
 import RootLayout from "./pages/RootLayout";
 import SignUp from "./pages/auth/SignUp";
-import AuthRootLayout from "./pages/AuthRootLayout";
-import ContactDetail from "./pages/ContactDetail";
+import AuthRootLayout from "./pages/auth/AuthRootLayout";
+import ContactDetail from "./pages/updateProfile/ContactDetail";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/reducers/authSlice";
@@ -21,8 +22,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/contactDetail",
+        path: "/updateProfile",
         element: <ContactDetail />,
+      },
+      {
+        path: "/expense",
+        element: <Expense />,
       },
     ],
   },

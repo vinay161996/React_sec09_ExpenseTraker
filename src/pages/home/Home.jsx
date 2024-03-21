@@ -1,9 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import ExpenseForm from "../components/ExpenseForm";
-import Expenses from "../components/Expenses";
 import { useSelector } from "react-redux";
-import Loader from "../ui/loader/Loader";
+import Loader from "../../ui/loader/Loader";
 
 const Home = () => {
   const isLoading = useSelector((store) => store.expenses.isLoading);
@@ -22,18 +20,16 @@ const Home = () => {
             style={{ backgroundColor: "#dabdc2" }}
           >
             your profile is incomplete.
-            <NavLink to="/contactDetail" style={{ cursor: "pointer" }}>
+            <NavLink to="/updateProfile" style={{ cursor: "pointer" }}>
               Complete now
             </NavLink>
           </Col>
         </Row>
-
-        <ExpenseForm />
-
-        <Row className="my-4 bg-dark-subtle rounded">
-          <Col className="text-center fs-4 py-1">Yours Expenses</Col>
+        <Row>
+          <Col className="mt-2 rounded">
+            <img className="rounded" src="Img/Expense.jpg" alt="Expenses" />
+          </Col>
         </Row>
-        <Expenses />
       </Container>
     </>
   );
