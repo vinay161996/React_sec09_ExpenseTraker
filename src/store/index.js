@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer, { authActions } from "./reducers/authSlice";
 import expensesReducer from "./reducers/expenseSlice";
+import themeReducer from "./reducers/themeSlice";
 // import getEmailAndToken from "../features/getEmailAndToken";
 
 const authMiddleware = () => (next) => (action) => {
@@ -41,6 +42,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     expenses: expensesReducer,
+    theme: themeReducer,
   },
   // preloadedState: preloadedState(),
   middleware: (defaultMiddleware) => defaultMiddleware().concat(authMiddleware),

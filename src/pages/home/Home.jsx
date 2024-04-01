@@ -10,7 +10,7 @@ const Home = () => {
     <>
       {isLoading && !error && <Loader />}
       {!!error && alert(error)}
-      <Container className="p-3 fst-italic vh-100 vw-100">
+      <Container className="p-3 fst-italic vw-100">
         <Row className="border-bottom py-3">
           <Col className="col-12 col-md-8 fs-4 d-flex align-items-center">
             Welcome to expense tracker

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addExpense } from "../store/actions/expense";
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ classesDark }) => {
   const updatingExpense = useSelector(
     (state) => state.expenses.updatingExpense
   );
@@ -57,16 +57,26 @@ const ExpenseForm = () => {
           })}
         />
         <select
-          className="focus-ring focus-ring-secondary form-select mt-4 bg-transparent border-2 border-dark border-opacity-50 "
+          className={`focus-ring ${
+            !!classesDark && "text-white"
+          } focus-ring-secondary form-select mt-4 bg-transparent`}
           aria-label="Default select example"
           {...register("category", {
             required: "Required*",
           })}
         >
-          <option value="">Category</option>
-          <option value="food">Food</option>
-          <option value="petrol">Petrol</option>
-          <option value="salary">Salary</option>
+          <option className={`${!!classesDark && "bg-black"}`} value="">
+            Category
+          </option>
+          <option className={`${!!classesDark && "bg-black"}`} value="food">
+            Food
+          </option>
+          <option className={`${!!classesDark && "bg-black"}`} value="petrol">
+            Petrol
+          </option>
+          <option className={`${!!classesDark && "bg-black"}`} value="salary">
+            Salary
+          </option>
         </select>
         {errors?.category?.message && (
           <p className="text-danger m-0">{errors.category.message}</p>

@@ -91,7 +91,7 @@ const ContactDetail = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <Container className="vh-100 vw-100">
+      <Container className="vw-100">
         <Row className="fst-italic border-bottom py-3 align-content-center">
           <Col className=" fs-4 col-12 col-md-7 d-flex  align-items-center ">
             Winners never quit,Quitters never win.

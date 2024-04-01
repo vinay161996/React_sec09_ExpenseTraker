@@ -4,6 +4,8 @@ const expenseInitialState = {
   isLoading: false,
   expenses: [],
   updatingExpense: {},
+  isPremium: false,
+  isPremiumActivated: false,
   error: null,
 };
 
@@ -18,6 +20,12 @@ const expenseSlice = createSlice({
       state.expenses = state.expenses.filter(
         (item) => item.id !== action.payload
       );
+    },
+    setIsPremium(state, action) {
+      state.isPremium = action.payload;
+    },
+    setIsPremiumActivated(state) {
+      state.isPremiumActivated = !state.isPremiumActivated;
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;

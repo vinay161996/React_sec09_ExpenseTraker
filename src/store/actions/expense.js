@@ -1,3 +1,4 @@
+import calTotalExpenseAmount from "../../features/calTotalExpenseAmount";
 import getEmailAndToken from "../../features/getEmailAndToken";
 import { expenseActions } from "../reducers/expenseSlice";
 
@@ -13,9 +14,13 @@ export const fetchExpense = () => {
       if (!res.ok) throw new Error();
       const data = await res.json();
       const expense = [];
+      let totalAmount = 0;
       for (let key in data) {
+        totalAmount += +data[key].amount;
         expense.push({ ...data[key], id: key });
       }
+      if (totalAmount >= 1000) dispatch(expenseActions.setIsPremium(true));
+
       dispatch(expenseActions.addingExpense(expense));
     } catch (e) {
       dispatch(expenseActions.setError("Failed to fetch expenses"));
@@ -44,6 +49,9 @@ export const addExpense = (item) => {
       const newExpenses = [...getstate().expenses.expenses];
       const expenseToAdd = { id: data.name, ...item };
       newExpenses.push(expenseToAdd);
+      const totalAmount = calTotalExpenseAmount(newExpenses);
+      if (totalAmount >= 1000 && !getstate().expenses.isPremium)
+        dispatch(expenseActions.setIsPremium(true));
       dispatch(expenseActions.addingExpense(newExpenses));
     } catch (e) {
       dispatch(expenseActions.setError("Failed to add expenses"));
@@ -55,7 +63,7 @@ export const addExpense = (item) => {
 };
 
 export const removeExpense = (id) => {
-  return async (dispatch) => {
+  return async (dispatch, getstate) => {
     try {
       dispatch(expenseActions.setIsLoading(true));
       dispatch(expenseActions.setError(null));
@@ -68,6 +76,16 @@ export const removeExpense = (id) => {
       };
       const res = await fetch(`${BASE_URL}/${email}/${id}.json`, resConfig);
       if (!res.ok) throw new Error();
+
+      const currentItemAmount = getstate().expenses.expenses.filter(
+        (item) => item.id === id
+      )[0].amount;
+      const totalAmount = calTotalExpenseAmount(getstate().expenses.expenses);
+      const currentTotalAmount = totalAmount - currentItemAmount;
+
+      if (currentTotalAmount < 1000 && getstate().expenses.isPremium) {
+        dispatch(expenseActions.setIsPremium(false));
+      }
       dispatch(expenseActions.removingExpense(id));
     } catch (e) {
       dispatch(expenseActions.setError("Failed to remove expense"));

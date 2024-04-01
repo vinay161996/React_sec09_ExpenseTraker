@@ -5,20 +5,26 @@ import { useSelector } from "react-redux";
 import Loader from "../../ui/loader/Loader";
 
 const Expense = () => {
-  const isLoading = useSelector((state) => state.expenses.isLoading);
-  const error = useSelector((state) => state.expenses.error);
+  const { isLoading, error, isPremiumActivated, isPremium } = useSelector(
+    (state) => state.expenses
+  );
+  const isDark = useSelector((state) => state.theme.isDark);
+
+  const classesDark =
+    isPremium && isPremiumActivated && isDark ? "text-black" : "";
+
   return (
     <>
       {isLoading && !error && <Loader />}
       {!isLoading && error && alert(error)}
       <Container>
         <Row style={{ maxWidth: "600px" }}>
-          <ExpenseForm />
+          <ExpenseForm classesDark={classesDark} />
         </Row>
-        <Row className="my-4 bg-dark-subtle rounded">
+        <Row className={`my-4 ${classesDark} bg-dark-subtle rounded`}>
           <Col className="text-center fs-4 py-1">Yours Expenses</Col>
         </Row>
-        <Expenses />
+        <Expenses classesDark={classesDark} />
       </Container>
     </>
   );
