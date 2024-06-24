@@ -14,7 +14,7 @@ const RootLayout = () => {
     isPremium && isPremiumActivated && isDark ? "bg-black text-white" : "";
 
   return (
-    <div className={`${classes} vh-100`}>
+    <div style={{ minHeight: "100vh" }} className={`${classes} pb-5`}>
       <NavBar />
       {isLoggedIn && <Outlet />}
       {!isLoggedIn && <Navigate to="/auth" />}
